@@ -1,9 +1,10 @@
 #VRML_SIM R2020a utf8
 WorldInfo {
+  basicTimeStep 8
 }
 Viewpoint {
-  orientation -0.2058615815827345 -0.8965742879508922 -0.3921422642531734 2.4131749754610445
-  position -19.93211242648026 26.98401847720077 -10.42447567365655
+  orientation 0.4815588460928354 0.7792196143863934 0.40114569710425346 4.502107187189096
+  position -4.5927138634429525 8.217019411575299 10.002140335182395
 }
 Floor {
   translation 0 0 7.5
@@ -63,12 +64,8 @@ Fridge {
   translation 4.08 0 2.91
   rotation 0 1 0 -1.5707953071795862
 }
-Television {
-  translation -4.9 1.08 9.87
-  rotation 0 1 0 1.5708
-}
 Carpet {
-  translation -3.26 0 9.83
+  translation -3.03 0 9.83
   rotation 0 1 0 1.5708
   color 0.3 0.2 0.2
 }
@@ -635,4 +632,12 @@ Panel {
 RangeRoverSportSVRSimple {
   translation 0.04 0.4 14.7986
   rotation 0 1 0 3.46682e-06
+}
+Armchair {
+  translation -4.35 0 9.88
+  color 0.4 0.2 0.1
+}
+Khepera3 {
+  translation 0 0 10.32
+  controller "cpp_controller"
 }
