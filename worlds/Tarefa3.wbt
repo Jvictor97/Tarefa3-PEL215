@@ -1,112 +1,31 @@
 #VRML_SIM R2020a utf8
 WorldInfo {
-  basicTimeStep 8
 }
 Viewpoint {
-  orientation 0.4815588460928354 0.7792196143863934 0.40114569710425346 4.502107187189096
-  position -4.5927138634429525 8.217019411575299 10.002140335182395
-}
-Floor {
-  translation 0 0 7.5
-  name "floor(1)"
-  size 10.3 10
-  tileSize 1 10
-  appearance PBRAppearance {
-    baseColor 0.8 0.7 0.7
-    baseColorMap ImageTexture {
-      url [
-        "textures/desktop_wood.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.1
-    emissiveIntensity 0
-    textureTransform TextureTransform {
-      scale 0 16
-    }
-  }
-}
-LandscapePainting {
-  translation -2.79 1.3 7.25
-  rotation 0 1 0 3.14159
-}
-Table {
-  translation 2.88 0 6.63
-  name "table(1)"
-  size 2.7 0.74 1
-  trayAppearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/parquetry.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.2
-  }
+  orientation -0.5266052688010013 0.6523871910322714 0.54504847843843 1.8998122290917383
+  position -1.7288603501351432 10.62095261650645 -1.0930222251385129
 }
 Oven {
-  translation 1 0.34 2.87
+  translation 2.28 0.34 2.87
   rotation 0 1 0 -1.5707953071795862
 }
-HotPlate {
-  translation 0.98 0.71 3.04
-}
 Sink {
-  translation 2.63 0.78 2.67
+  translation 0.94 0.78 2.68
   rotation 0 1 0 3.14159
 }
 Sink {
-  translation 2.19 0.78 2.67
+  translation 0.5 0.78 2.68
   rotation 0 1 0 3.14159
   name "sink(1)"
 }
 Fridge {
-  translation 4.08 0 2.91
+  translation -2.15 0 2.91
   rotation 0 1 0 -1.5707953071795862
-}
-Carpet {
-  translation -3.03 0 9.83
-  rotation 0 1 0 1.5708
-  color 0.3 0.2 0.2
-}
-Chair {
-  translation 2.63 0 9.74
-  color 0.3 0 0
-}
-Chair {
-  translation 3.71 0 9.74
-  rotation 0 1 0 3.14159
-  name "chair(1)"
-  color 0.3 0 0
-}
-Chair {
-  translation 3.18 0 10.72
-  rotation 0 -1 0 -1.5707953071795862
-  name "chair(2)"
-  color 0.3 0 0
-}
-Chair {
-  translation 3.18 0 8.87
-  rotation 0 1 0 -1.5707953071795862
-  name "chair(3)"
-  color 0.3 0 0
-}
-Table {
-  translation 3.16 0 9.74
-  rotation 0 1 0 -1.5707953071795862
-  trayAppearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/varnished_wood.jpg"
-      ]
-    }
-    metalness 0
-  }
 }
 Floor {
-  translation 0 0 15.5
+  translation 0 0 8
   name "floor(2)"
-  size 7 6
+  size 6 11
   tileSize 1 1
   appearance PBRAppearance {
     baseColorMap ImageTexture {
@@ -122,40 +41,9 @@ Floor {
   }
 }
 Floor {
-  translation -10.5 0 6.65
+  translation -4 0 7
   name "floor(3)"
-  size 2 15
-  tileSize 1 1
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/rock.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.3
-  }
-}
-Floor {
-  translation -7.33 0 -0.1
-  rotation 0 1 0 1.5707996938995747
-  name "floor(5)"
-  size 1.2 4.35
-  tileSize 1 1
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/rock.jpg"
-      ]
-    }
-    metalness 0.3
-  }
-}
-Floor {
-  translation -7.5 0 14.9
-  rotation 0 1 0 1.5708003061004252
-  name "floor(4)"
-  size 1.5 8
+  size 2 13
   tileSize 1 1
   appearance PBRAppearance {
     baseColorMap ImageTexture {
@@ -172,7 +60,8 @@ TexturedBackground {
 TexturedBackgroundLight {
 }
 Floor {
-  size 10.3 5
+  translation -0.1 0 0
+  size 6.2 5
   tileSize 1 1
   appearance PBRAppearance {
     baseColorMap ImageTexture {
@@ -186,26 +75,26 @@ Floor {
   }
 }
 Wall {
-  translation 3.15 0 2.4
-  size 4 2.4 0.2
+  translation 2.35 0 2.4
+  size 1.7 2.4 0.2
 }
 Wall {
-  translation -1.44 0 2.4
+  translation -1.6 0 2.4
   name "wall(6)"
-  size 2 2.4 0.2
+  size 3.2 2.4 0.2
 }
 Window {
-  translation 0.75 0 2.4
+  translation 1.1 0 2.4
 }
 Window {
-  translation -0.05 0 2.4
+  translation 0.33 0 2.4
   name "window(1)"
 }
 Wall {
-  translation -5.05 0 7.55
+  translation -3.1 0 7
   rotation 0 1 0 1.5708
   name "wall(4)"
-  size 10.1 2.4 0.2
+  size 9 2.4 0.2
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
@@ -220,10 +109,10 @@ Wall {
   }
 }
 Wall {
-  translation -11.4 0 7.4
+  translation -5.1 0 7.01
   rotation 0 1 0 1.5708
   name "wall(10)"
-  size 16.5 2.4 0.2
+  size 13 2.4 0.2
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
@@ -238,10 +127,10 @@ Wall {
   }
 }
 Wall {
-  translation -7.49 0 15.74
+  translation -3.5 0 13.41
   rotation 0 -1 0 -5.307179586466759e-06
   name "wall(16)"
-  size 8 2.4 0.2
+  size 3 2.4 0.2
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
@@ -256,25 +145,7 @@ Wall {
   }
 }
 Wall {
-  translation -6.51 0 14.04
-  rotation 0 -1 0 -5.307179586466759e-06
-  name "wall(17)"
-  size 6 2.4 0.2
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/rock.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.8
-    textureTransform TextureTransform {
-      scale 5 2
-    }
-  }
-}
-Wall {
-  translation -10.5001 0 -0.949992
+  translation -4.2001 0.01 0.40998
   rotation 0 -1 0 -5.307179586466759e-06
   name "wall(18)"
   size 2 2.4 0.2
@@ -292,225 +163,64 @@ Wall {
   }
 }
 Wall {
-  translation -7.3301 0 -0.800008
+  translation -1.0101 0.01 6.65997
   rotation 0 -1 0 -5.307179586466759e-06
-  name "wall(19)"
-  size 4.35 2.4 0.2
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/rock.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.8
-    textureTransform TextureTransform {
-      scale 5 2
-    }
-  }
-}
-Wall {
-  translation -7.3301 0 0.599992
-  rotation 0 -1 0 -5.307179586466759e-06
-  name "wall(20)"
-  size 4.35 2.4 0.2
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/rock.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.8
-    textureTransform TextureTransform {
-      scale 5 2
-    }
-  }
-}
-Wall {
-  translation -9.6 0 7.34
-  rotation 0 1 0 1.5708
-  name "wall(11)"
-  size 13.6 2.4 0.2
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/rock.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.8
-    textureTransform TextureTransform {
-      scale 5 2
-    }
-  }
-}
-Wall {
-  translation 5.05 0 7.55
-  rotation 0 1 0 1.5708
-  name "wall(5)"
-  size 10.1 2.4 0.2
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/rock.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.8
-    textureTransform TextureTransform {
-      scale 5 2
-    }
-  }
-}
-Wall {
-  translation -4.4 0 2.39
-  name "wall(3)"
-  size 1.5 2.4 0.2
-}
-Wall {
-  translation -2.95 0 12.5
-  name "wall(8)"
-  size 4 2.4 0.2
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/red_brick_wall.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.9
-    textureTransform TextureTransform {
-      scale 7 3
-    }
-  }
-}
-Wall {
-  translation -3.41 0 13.35
-  rotation 0 1 0 1.5708
-  name "wall(12)"
-  size 1.6 2.4 0.2
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/red_brick_wall.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.9
-    textureTransform TextureTransform {
-      scale 7 3
-    }
-  }
-}
-Wall {
-  translation -3.41 0 17.04
-  rotation 0 1 0 1.5708
-  name "wall(15)"
-  size 2.8 2.4 0.2
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/red_brick_wall.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.9
-    textureTransform TextureTransform {
-      scale 7 3
-    }
-  }
-}
-Wall {
-  translation 3.61 0 15.6
-  rotation 0 1 0 1.5708
-  name "wall(9)"
-  size 6 2.4 0.2
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/red_brick_wall.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.9
-    textureTransform TextureTransform {
-      scale 7 3
-    }
-  }
-}
-Wall {
-  translation 3.01 0 18.5
-  rotation 0 -1 0 -5.307179586466759e-06
-  name "wall(13)"
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/red_brick_wall.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.9
-    textureTransform TextureTransform {
-      scale 2 3
-    }
-  }
-}
-Wall {
-  translation -3.02 0 18.5
-  rotation 0 -1 0 -5.307179586466759e-06
-  name "wall(14)"
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/red_brick_wall.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.9
-    textureTransform TextureTransform {
-      scale 2 3
-    }
-  }
-}
-Wall {
-  translation 2.95 0 12.5
-  name "wall(7)"
-  size 4 2.4 0.2
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/red_brick_wall.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.9
-    textureTransform TextureTransform {
-      scale 7 3
-    }
-  }
-}
-Wall {
-  translation 2.95 0 7.38
   name "wall(1)"
   size 4 2.4 0.2
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
-        "textures/red_brick_wall.jpg"
+        "textures/rock.jpg"
       ]
     }
     roughness 1
-    metalness 0.9
+    metalness 0.8
     textureTransform TextureTransform {
-      scale 7 3
+      scale 5 2
     }
   }
 }
 Wall {
-  translation -2.93 0 7.38
+  translation 0.9999 0.01 10.4
+  rotation 0 -1 0 -5.307179586466759e-06
   name "wall(2)"
   size 4 2.4 0.2
+  appearance PBRAppearance {
+    baseColorMap ImageTexture {
+      url [
+        "textures/rock.jpg"
+      ]
+    }
+    roughness 1
+    metalness 0.8
+    textureTransform TextureTransform {
+      scale 5 2
+    }
+  }
+}
+Wall {
+  translation 3.1 0 7.99
+  rotation 0 1 0 1.5708
+  name "wall(5)"
+  size 11 2.4 0.2
+  appearance PBRAppearance {
+    baseColorMap ImageTexture {
+      url [
+        "textures/rock.jpg"
+      ]
+    }
+    roughness 1
+    metalness 0.8
+    textureTransform TextureTransform {
+      scale 5 2
+    }
+  }
+}
+Wall {
+  translation 3.1 0 -0.1
+  rotation 0 1 0 1.5708
+  name "wall(3)"
+  size 4.8 1 0.2
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
@@ -524,120 +234,68 @@ Wall {
     }
   }
 }
-PicketFence {
-  translation -5.15 0 -2.46
-  numberOfSegments 6
-}
-PicketFence {
-  translation 5.11 0 -2.49
-  rotation 0 1 0 -1.5707953071795862
-  name "picket fence(1)"
-  numberOfSegments 3
-}
-PicketFence {
-  translation -5.1 0 -0.69
+Wall {
+  translation -3.3 0 -1.08998
   rotation 0 1 0 1.5708
-  name "picket fence(2)"
+  name "wall(12)"
+  size 2.815 1 0.2
+  appearance PBRAppearance {
+    baseColorMap ImageTexture {
+      url [
+        "textures/red_brick_wall.jpg"
+      ]
+    }
+    roughness 1
+    metalness 0.9
+    textureTransform TextureTransform {
+      scale 7 3
+    }
+  }
 }
-PicketFence {
-  translation -5.1 0 0.51
-  rotation 0 1 0 -1.5708
-  name "picket fence(3)"
+Wall {
+  translation -0.100013 0 -2.59999
+  rotation 0 -1 0 -5.307179586466759e-06
+  name "wall(11)"
+  size 6.6 1 0.2
+  appearance PBRAppearance {
+    baseColorMap ImageTexture {
+      url [
+        "textures/red_brick_wall.jpg"
+      ]
+    }
+    roughness 1
+    metalness 0.9
+    textureTransform TextureTransform {
+      scale 7 3
+    }
+  }
 }
 DogHouse {
-  translation 4.02336 0 -1.47778
+  translation 2.08336 0 -1.47778
   rotation 0 -1 0 -1.5707953071795862
 }
 Sofa {
-  translation -1.65 0 9.84
-  rotation 0 1 0 3.14159
+  translation -2.3 0 8.7
+  rotation 0 1 0 -5.307179586466759e-06
   color 0.4 0.2 0.1
-}
-FloorLight {
-  translation -4.67 0 7.69
-}
-FloorLight {
-  translation -4.67 0 12.14
-  name "floor light(1)"
-}
-FloorLight {
-  translation 4.62 0 5.01
-  name "floor light(2)"
 }
 Worktop {
-  translation 2.42 0.71 2.9
+  translation 0.71 0.71 2.9
   rotation 0 1 0 1.5708
-  size 0.8 0.06 2
-}
-CeilingSpotLight {
-  translation -1.36 2.35 2.55
-}
-CeilingSpotLight {
-  translation -1.36 2.35 7.23
-  name "ceiling light(1)"
-}
-CeilingSpotLight {
-  translation 4.25 2.35 7.23
-  name "ceiling light(5)"
-}
-CeilingSpotLight {
-  translation 1.81 2.35 7.23
-  name "ceiling light(6)"
-}
-CeilingSpotLight {
-  translation -2.91 2.35 7.23
-  name "ceiling light(3)"
-}
-CeilingSpotLight {
-  translation -4.42 2.35 7.23
-  name "ceiling light(4)"
-}
-CeilingSpotLight {
-  translation -11.25 2.35 7.23
-  name "ceiling light(7)"
-}
-CeilingSpotLight {
-  translation -11.25 2.35 9.23
-  name "ceiling light(11)"
-}
-CeilingSpotLight {
-  translation -11.25 2.35 11.23
-  name "ceiling light(12)"
-}
-CeilingSpotLight {
-  translation -11.25 2.35 13.23
-  name "ceiling light(13)"
-}
-CeilingSpotLight {
-  translation -11.25 2.35 5.23
-  name "ceiling light(8)"
-}
-CeilingSpotLight {
-  translation -11.25 2.35 3.23
-  name "ceiling light(9)"
-}
-CeilingSpotLight {
-  translation -11.25 2.35 1.23
-  name "ceiling light(10)"
-}
-CeilingSpotLight {
-  translation -1.36 2.35 2.55
-  name "ceiling light(2)"
+  size 0.8 0.06 1.55
 }
 Panel {
-  translation -2.5 0 18.47
+  translation -2 0 13.52
   size 5 2.4 0.05
-  panelsCount 8
+  panelsCount 4
 }
-RangeRoverSportSVRSimple {
-  translation 0.04 0.4 14.7986
-  rotation 0 1 0 3.46682e-06
-}
-Armchair {
-  translation -4.35 0 9.88
-  color 0.4 0.2 0.1
-}
-Khepera3 {
-  translation 0 0 10.32
-  controller "cpp_controller"
+Pioneer3at {
+  translation 0.849994 0.11 -1.63
+  rotation 0 1 0 1.5708
+  controller "my_controller"
+  supervisor TRUE
+  extensionSlot [
+    GPS {
+    }
+  ]
 }
