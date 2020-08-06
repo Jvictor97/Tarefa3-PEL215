@@ -2,30 +2,13 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.5266052688010013 0.6523871910322714 0.54504847843843 1.8998122290917383
-  position -1.7288603501351432 10.62095261650645 -1.0930222251385129
-}
-Oven {
-  translation 2.28 0.34 2.87
-  rotation 0 1 0 -1.5707953071795862
-}
-Sink {
-  translation 0.94 0.78 2.68
-  rotation 0 1 0 3.14159
-}
-Sink {
-  translation 0.5 0.78 2.68
-  rotation 0 1 0 3.14159
-  name "sink(1)"
-}
-Fridge {
-  translation -2.15 0 2.91
-  rotation 0 1 0 -1.5707953071795862
+  orientation -0.9984105751522272 -0.0521576141858829 0.02135197196128323 1.3455518040552008
+  position -1.6688481740922505 16.0135497421034 6.704956073394532
 }
 Floor {
-  translation 0 0 8
+  translation -1 0 5.5
   name "floor(2)"
-  size 6 11
+  size 8 16
   tileSize 1 1
   appearance PBRAppearance {
     baseColorMap ImageTexture {
@@ -40,55 +23,14 @@ Floor {
     }
   }
 }
-Floor {
-  translation -4 0 7
-  name "floor(3)"
-  size 2 13
-  tileSize 1 1
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/rock.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.3
-  }
-}
 TexturedBackground {
 }
 TexturedBackgroundLight {
 }
-Floor {
-  translation -0.1 0 0
-  size 6.2 5
-  tileSize 1 1
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/grass.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.3
-    IBLStrength 0
-  }
-}
 Wall {
-  translation 2.35 0 2.4
-  size 1.7 2.4 0.2
-}
-Wall {
-  translation -1.6 0 2.4
+  translation 0 0 2.4
   name "wall(6)"
-  size 3.2 2.4 0.2
-}
-Window {
-  translation 1.1 0 2.4
-}
-Window {
-  translation 0.33 0 2.4
-  name "window(1)"
+  size 6.4 2.4 0.2
 }
 Wall {
   translation -3.1 0 7
@@ -109,10 +51,10 @@ Wall {
   }
 }
 Wall {
-  translation -5.1 0 7.01
+  translation -5.1 0 5.51
   rotation 0 1 0 1.5708
   name "wall(10)"
-  size 13 2.4 0.2
+  size 16 2.4 0.2
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
@@ -145,25 +87,7 @@ Wall {
   }
 }
 Wall {
-  translation -4.2001 0.01 0.40998
-  rotation 0 -1 0 -5.307179586466759e-06
-  name "wall(18)"
-  size 2 2.4 0.2
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/rock.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.8
-    textureTransform TextureTransform {
-      scale 5 2
-    }
-  }
-}
-Wall {
-  translation -1.0101 0.01 6.65997
+  translation -1.0101 0.01 7.08997
   rotation 0 -1 0 -5.307179586466759e-06
   name "wall(1)"
   size 4 2.4 0.2
@@ -199,7 +123,7 @@ Wall {
   }
 }
 Wall {
-  translation 3.1 0 7.99
+  translation 3.1 0 8.01
   rotation 0 1 0 1.5708
   name "wall(5)"
   size 11 2.4 0.2
@@ -235,28 +159,10 @@ Wall {
   }
 }
 Wall {
-  translation -3.3 0 -1.08998
-  rotation 0 1 0 1.5708
-  name "wall(12)"
-  size 2.815 1 0.2
-  appearance PBRAppearance {
-    baseColorMap ImageTexture {
-      url [
-        "textures/red_brick_wall.jpg"
-      ]
-    }
-    roughness 1
-    metalness 0.9
-    textureTransform TextureTransform {
-      scale 7 3
-    }
-  }
-}
-Wall {
-  translation -0.100013 0 -2.59999
+  translation -0.920013 0 -2.58999
   rotation 0 -1 0 -5.307179586466759e-06
   name "wall(11)"
-  size 6.6 1 0.2
+  size 8.2 1 0.2
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
@@ -270,27 +176,8 @@ Wall {
     }
   }
 }
-DogHouse {
-  translation 2.08336 0 -1.47778
-  rotation 0 -1 0 -1.5707953071795862
-}
-Sofa {
-  translation -2.3 0 8.7
-  rotation 0 1 0 -5.307179586466759e-06
-  color 0.4 0.2 0.1
-}
-Worktop {
-  translation 0.71 0.71 2.9
-  rotation 0 1 0 1.5708
-  size 0.8 0.06 1.55
-}
-Panel {
-  translation -2 0 13.52
-  size 5 2.4 0.05
-  panelsCount 4
-}
 Pioneer3at {
-  translation 0.849994 0.11 -1.63
+  translation 1.99001 0.11 3.91
   rotation 0 1 0 1.5708
   controller "my_controller"
   supervisor TRUE
@@ -298,4 +185,9 @@ Pioneer3at {
     GPS {
     }
   ]
+}
+Panel {
+  translation -1.96 0 13.54
+  size 5 2.4 0.05
+  panelsCount 4
 }

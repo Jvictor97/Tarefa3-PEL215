@@ -64,15 +64,19 @@ int main(int argc, char **argv) {
   double currentRightDistance, currentLeftDistance;
   
   // Distancia minima para as paredes do lado direito
-  double minimumDistance = 100.0;
+  double minimumDistance = 200.0;
   
   // Variaveis para os erros no controle PID 
   double error, integral = 0.0, errorDifference, oldError = 0.0;
   
   // Constantes definidas para o PID
-  double kp = 0.25;
+/*  double kp = 0.25;
   double ki = 0.0002;
-  double kd = 0.005; 
+  double kd = 0.005; */
+  
+  double kp = 0.3;
+  double kd = 0.0;
+  double ki = 0.0;
 
   // Variaveis para o maior valor dos sensores 
   // do lado esquerdo e direito       
@@ -145,13 +149,16 @@ int main(int argc, char **argv) {
     
     // Calcula a potencia a ser adicionada ao lado direito (Controlador PID)
     motorPower = (kp * error) + (ki * integral) + (kd * errorDifference);
-    
+       
     // Calcula a nova velocidade do lado direito
     rightSpeed = 3.0 + motorPower;
     
     // Condicoes para limitar as velocidades minima e maxima
-    if (rightSpeed < 1.0) rightSpeed = 1.0;
+    if (rightSpeed < 1.5) rightSpeed = 1.5;
     if (rightSpeed > 5.0) rightSpeed = 5.0;
+    
+    printf("rightSpeed: %f\n", rightSpeed);
+    fflush(stdout);
        
     // Aplica as velocidades aos motores do robo
     wb_motor_set_velocity(frontLeftMotor, leftSpeed);
