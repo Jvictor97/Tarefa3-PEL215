@@ -26,6 +26,15 @@ int main(int argc, char **argv) {
   // Inicialização do webots
   wb_robot_init();
   
+  double gridMap[8][16];
+  
+  for(int i = 0; i < 8; i++) {
+    for(int j = 0; j < 16; j++) {
+      gridMap[i][j] = 0.5;
+    }
+  }
+  
+  
   // Criando tags para os motores do robo
   WbDeviceTag frontLeftMotor = wb_robot_get_device("front left wheel");   // motor dianteiro esquerdo
   WbDeviceTag frontRightMotor = wb_robot_get_device("front right wheel"); // motor dianteiro direito
@@ -75,7 +84,7 @@ int main(int argc, char **argv) {
   double kd = 0.005; */
   
   double kp = 0.3;
-  double kd = 0.0;
+  double kd = 0.0002;
   double ki = 0.0;
 
   // Variaveis para o maior valor dos sensores 
