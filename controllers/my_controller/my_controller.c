@@ -87,6 +87,20 @@ void occupancyGridMapping(double x, double y, double theta, double sensorData[])
     }
 }
 
+// Função para printar a matriz L
+void printMatrix(){
+  for (int row = 0; row < 8; row++) {
+    for (int column = 0; column < 16; column++) {  
+       printf("%.2f ", l[row][column]);  
+   }
+    printf("\n");
+ }
+ 
+  printf("----------------------------------------------\n");
+  printf("----------------------------------------------\n");
+  printf("----------------------------------------------\n");
+}
+
 // Funcao principal
 int main(int argc, char **argv) {
   // Inicialização do webots
@@ -163,10 +177,7 @@ int main(int argc, char **argv) {
   
   // Código do Supervisor
   WbNodeRef robot_node = wb_supervisor_node_get_from_def("MY_ROBOT");
-  //WbFieldRef translation = wb_supervisor_node_get_field(robot_node, "translation");
   WbFieldRef rotation = wb_supervisor_node_get_field(robot_node, "rotation");
-  const double *position = wb_supervisor_node_get_position(robot_node);
-  //const double *orientation = wb_supervisor_node_get_orientation (robot_node);
 
   while (wb_robot_step(TIME_STEP) != -1) {
  
@@ -237,30 +248,45 @@ int main(int argc, char **argv) {
     // Condicoes para limitar as velocidades minima e maxima
     if (rightSpeed < 1.5) rightSpeed = 1.5;
     if (rightSpeed > 5.0) rightSpeed = 5.0;
-    
-    //printf("rightSpeed: %f\n", rightSpeed);
-
-       
+           
     // Aplica as velocidades aos motores do robo
     wb_motor_set_velocity(frontLeftMotor, leftSpeed);
     wb_motor_set_velocity(backLeftMotor, leftSpeed);
     wb_motor_set_velocity(frontRightMotor, rightSpeed);
     wb_motor_set_velocity(backRightMotor, rightSpeed);
     
-    //const double *values = wb_supervisor_field_get_sf_vec3f(translation);
     const double *rot_values = wb_supervisor_field_get_sf_rotation(rotation);
-    // printf("MY_ROBOT is at position: %g %g %g\n", values[0], values[1], values[2]);
+    
     double yAxis = rot_values[1];
-    double yRotation = rot_values[3];
+    double yAngle = rot_values[3];
 
-    //if (yAxis == 1) 
+    // Em algumas situações o webots inverte o eixo Y de -1 (configurado)
+    // para 1 (valor padrão), portanto será realizada a validação para 
+    // inverter os ângulos caso necessário
+    if (yAxis > 0 && abs(yAxis - 1) < 0.5) yAngle = -yAngle;
     
-        
-    //printf("MY_ROBOT is at rotation: %g %g %g %g\n", rot_values[0], rot_values[1], rot_values[2], rot_values[3]);
-    //printf("MY_ROBOT is at position: %g %g %g\n", position[0], position[1], position[2]);
-    //printf("*********\n");
+    // Obtendo a posição do robô
+    const double *position = wb_supervisor_node_get_position(robot_node);
+    double x = position[0];
+    double z = position[2];
     
-    //fflush(stdout);    
+    // Convertendo os valores dos sensores para metros
+    double sensorRawValues[] = { so0Value, so1Value, so2Value, so3Value,
+                                 so4Value, so5Value, so6Value, so7Value };                             
+    double sensorMetricValues[8];
+    
+    for(int sensorIndex = 0; sensorIndex < 8; sensorIndex++) {
+      const double slope = -0.004947;
+      const double intercept = 5.2;
+      const double sensorRawValue = sensorRawValues[sensorIndex];
+     
+      sensorMetricValues[sensorIndex] = slope * sensorRawValue + intercept;;     
+    }
+    
+    occupancyGridMapping(x, z, yAngle, sensorMetricValues);
+    printMatrix();
+
+    fflush(stdout);    
   };
   
   // Limpeza do ambiente do webots
