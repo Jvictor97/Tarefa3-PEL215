@@ -43,6 +43,8 @@ double inverseSensorModel(double x, double y, double theta, double xi, double yi
   double alpha = 0.2, beta = 20;
   
   double r = sqrt(pow(xi - x, 2) + pow(yi - y, 2));
+  printf("Robo: (%.2f, %.2f)\nCelula: (%.2f, %.2f)\n", x, y, xi, yi);
+  printf("Distancia: %f \n", r);
   double phi = atan2(yi - y, xi - x) - theta;
   
   // Ângulos dos sensores: [-90, -50, -30, -10, 10, 30, 50, 90]
@@ -71,16 +73,18 @@ double inverseSensorModel(double x, double y, double theta, double xi, double yi
   return 0.0;
 }
 
+// Função principal do GridMap (nessa função a coordenada 
+// Z foi chamada de Y para não confundir com a medida do sensor
 void occupancyGridMapping(double x, double y, double theta, double sensorData[]) {
-    double cellWidth = 1.0;
     for (int row = 0; row < 8; row++) {
         for (int column = 0; column < 16; column++) {
-            double xi = row + cellWidth / 2;
-            double yi = column + cellWidth / 2;
+            
+            double xi = -row + 3.5;
+            double yi = column - 7.5;
             
             // Uma célula será considerada como "dentro do campo de visão" caso a distância
             // entre o centro de massa do robô e o da célula seja menor do que zmax
-            if (sqrt(pow(xi - x, 2) + pow(yi - x, 2)) <= zmax) {
+            if (sqrt(pow(xi - x, 2) + pow(yi - y, 2)) <= zmax) {
                 l[row][column] = l[row][column] + inverseSensorModel(x, y, theta, xi, yi, sensorData) - l0;
             }
         }
