@@ -8,6 +8,12 @@
 
 #define TIME_STEP 64
 
+// Matriz com os valores de logOdds para o grid
+double l[8][16];
+
+// Distância máxima medida pelo sensor
+double zmax = 5.3;
+
 // Definicao da funcao delay
 void delay (int time_milisec) {
   double currentTime, initTime, Timeleft;
@@ -24,10 +30,9 @@ void delay (int time_milisec) {
 
 // Função inverseSensorModel, como definido em:
 // Sebastian THRUN; Wolfram BURGARD; Dieter FOX - PROBABILISTIC ROBOTICS (Tabela 9.2)
-double inverseSensorModel(double x, double y, double theta, double xi, double sensorData[]) {
+double inverseSensorModel(double x, double y, double theta, double xi, double yi, double sensorData[]) {
   
   // Dados dos sensores
-  double zmax = 5.2;
   double zk, thetak, sensorTheta;
   double minDelta = -1;
   
@@ -64,16 +69,39 @@ double inverseSensorModel(double x, double y, double theta, double xi, double se
   
 }
 
+void occupancyGridMapping(double x, double y, double theta, double sensorData[])
+{
+    double cellWidth = 1.0;
+    //******************Code the Occupancy Grid Mapping Algorithm**********************//
+    for (int row = 0; row < 8; row++) {
+        for (int column = 0; column < 16; column++) {
+            double xi = row + cellWidth / 2;
+            double yi = column + cellWidth / 2;
+            
+            // Uma célula será considerada como "dentro do campo de visão" caso a distância
+            // entre o centro de massa do robô e o da célula seja menor do que zmax
+            if (sqrt(pow(xi - x, 2) + pow(yi - x, 2)) <= zmax) {
+                l[row][column] = l[row][column] + inverseSensorModel(x, y, theta, xi, yi, sensorData) - l0;
+            }
+        }
+    }
+}
+
+/* TODO
+  - capturar valores dos sensores e converter para metros usando a fórmula do caderno
+  - capturar a posição X e Y do robô
+  - capturar a rotação do robô (theta) e converter conforme o caderno
+  - Printar/Plotar o grid
+*/
+
 // Funcao principal
 int main(int argc, char **argv) {
   // Inicialização do webots
   wb_robot_init();
   
-  double gridMap[8][16];
-  
-  for(int i = 0; i < 8; i++) {
-    for(int j = 0; j < 16; j++) {
-      gridMap[i][j] = 0.5;
+  for(int row = 0; row < 8; row++) {
+    for(int column = 0; column < 16; column++) {
+      l[row][column] = 0.0;
     }
   }
   

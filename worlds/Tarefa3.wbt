@@ -184,7 +184,7 @@ Wall {
     }
   }
 }
-Pioneer3at {
+DEF MY_ROBOT Pioneer3at {
   translation -3.5 0 7.5
   rotation 0 1 0 -1.5707953071795862
   controller "my_controller"
