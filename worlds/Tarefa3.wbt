@@ -2,8 +2,8 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.5805878201367427 -0.6115279872281246 -0.5375419090132266 2.084327269306228
-  position -2.445372645589093 26.657944334889542 -1.1327058633908273
+  orientation -0.5768638082385705 -0.6133466026972729 -0.5394757563637197 2.090451658332547
+  position -2.077547470026571 29.618753930147015 -1.9639959519020926
 }
 Floor {
   name "floor(2)"
@@ -77,7 +77,7 @@ Wall {
   }
 }
 Wall {
-  translation -2.5 0 7.91
+  translation -2.5 0 7.89
   rotation 0 -1 0 -5.307179586466759e-06
   name "wall(16)"
   size 3 2.4 0.2
@@ -186,7 +186,7 @@ Wall {
 }
 DEF MY_ROBOT Pioneer3at {
   translation -3.5 0 7.5
-  rotation 0 1 0 -1.5707953071795862
+  rotation 0 -1 0 1.5708
   controller "my_controller"
   supervisor TRUE
   extensionSlot [

@@ -13,6 +13,8 @@ double l[8][16];
 
 // Distância máxima medida pelo sensor
 double zmax = 5.3;
+// Variáveis para o Mapeamento
+double l0 = 0.0, locc = 0.4, lfree = -0.4;
 
 // Definicao da funcao delay
 void delay (int time_milisec) {
@@ -35,9 +37,7 @@ double inverseSensorModel(double x, double y, double theta, double xi, double yi
   // Dados dos sensores
   double zk, thetak, sensorTheta;
   double minDelta = -1;
-  
-  // Variáveis para o Mapeamento
-  double l0 = 0.0, locc = 0.4, lfree = -0.4;
+
   
   // Alpha = grossura das paredes, Beta = ângulo de abertura dos sensores
   double alpha = 0.2, beta = 20;
@@ -46,7 +46,7 @@ double inverseSensorModel(double x, double y, double theta, double xi, double yi
   double phi = atan2(yi - y, xi - x) - theta;
   
   // Ângulos dos sensores: [-90, -50, -30, -10, 10, 30, 50, 90]
-  const double sensorAngles = [-90, -50, -30, -10, 10, 30, 50, 90];
+  const double sensorAngles[] = {-90, -50, -30, -10, 10, 30, 50, 90};
 
   for (int sensorIndex = 0; sensorIndex < 8; sensorIndex++) {
     sensorTheta = sensorAngles[sensorIndex] * M_PI / 180;    
@@ -58,21 +58,21 @@ double inverseSensorModel(double x, double y, double theta, double xi, double yi
     }
   }
   
-  if (r > min((double) zmax, zk + alpha / 2) || fabs(phi - thetak) > beta / 2 || zk > zmax)
+  if (r > fmin((double) zmax, zk + alpha / 2) || fabs(phi - thetak) > beta / 2 || zk > zmax)
     return l0;
 
   if (zk < zmax && fabs(r - zk) < alpha / 2)
     return locc;
   
-  if (r <= Zk) {
+  if (r <= zk)
     return lfree;
   
+  
+  return 0.0;
 }
 
-void occupancyGridMapping(double x, double y, double theta, double sensorData[])
-{
+void occupancyGridMapping(double x, double y, double theta, double sensorData[]) {
     double cellWidth = 1.0;
-    //******************Code the Occupancy Grid Mapping Algorithm**********************//
     for (int row = 0; row < 8; row++) {
         for (int column = 0; column < 16; column++) {
             double xi = row + cellWidth / 2;
@@ -86,13 +86,6 @@ void occupancyGridMapping(double x, double y, double theta, double sensorData[])
         }
     }
 }
-
-/* TODO
-  - capturar valores dos sensores e converter para metros usando a fórmula do caderno
-  - capturar a posição X e Y do robô
-  - capturar a rotação do robô (theta) e converter conforme o caderno
-  - Printar/Plotar o grid
-*/
 
 // Funcao principal
 int main(int argc, char **argv) {
@@ -120,6 +113,7 @@ int main(int argc, char **argv) {
   WbDeviceTag so1 = wb_robot_get_device("so1");
   WbDeviceTag so2 = wb_robot_get_device("so2");
   WbDeviceTag so3 = wb_robot_get_device("so3");
+  WbDeviceTag so4 = wb_robot_get_device("so4");
   
   // Habilitando os sensores
   wb_distance_sensor_enable(so7, TIME_STEP);
@@ -128,17 +122,18 @@ int main(int argc, char **argv) {
   wb_distance_sensor_enable(so0, TIME_STEP);
   wb_distance_sensor_enable(so1, TIME_STEP); 
   wb_distance_sensor_enable(so3, TIME_STEP);
+  wb_distance_sensor_enable(so4, TIME_STEP);
   wb_distance_sensor_enable(so2, TIME_STEP);
   
   // Configurando os motores
-  //wb_motor_set_position(frontLeftMotor, INFINITY);
-  //wb_motor_set_position(frontRightMotor, INFINITY);
-  //wb_motor_set_position(backLeftMotor, INFINITY);
-  //wb_motor_set_position(backRightMotor, INFINITY);    
+  wb_motor_set_position(frontLeftMotor, INFINITY);
+  wb_motor_set_position(frontRightMotor, INFINITY);
+  wb_motor_set_position(backLeftMotor, INFINITY);
+  wb_motor_set_position(backRightMotor, INFINITY);    
   
   // Variaveis para os valores dos sensores
   double so7Value, so6Value, so5Value, so0Value, 
-         so1Value, so2Value, so3Value;
+         so1Value, so2Value, so3Value, so4Value;
   
   // Variaveis para as distancias leterais do robo
   double currentRightDistance, currentLeftDistance;
@@ -152,7 +147,7 @@ int main(int argc, char **argv) {
   // Constantes definidas para o PID
   double kp = 0.3;
   double kd = 0.0002;
-  double ki = 0.0;
+  double ki = 0.000001;
 
   // Variaveis para o maior valor dos sensores 
   // do lado esquerdo e direito       
@@ -168,8 +163,10 @@ int main(int argc, char **argv) {
   
   // Código do Supervisor
   WbNodeRef robot_node = wb_supervisor_node_get_from_def("MY_ROBOT");
-  WbFieldRef translation = wb_supervisor_node_get_field(robot_node, "translation");
+  //WbFieldRef translation = wb_supervisor_node_get_field(robot_node, "translation");
   WbFieldRef rotation = wb_supervisor_node_get_field(robot_node, "rotation");
+  const double *position = wb_supervisor_node_get_position(robot_node);
+  //const double *orientation = wb_supervisor_node_get_orientation (robot_node);
 
   while (wb_robot_step(TIME_STEP) != -1) {
  
@@ -177,23 +174,25 @@ int main(int argc, char **argv) {
     so0Value = wb_distance_sensor_get_value(so0); 
     so1Value = wb_distance_sensor_get_value(so1); 
     so2Value = wb_distance_sensor_get_value(so2); 
-    so3Value = wb_distance_sensor_get_value(so3);  
+    so3Value = wb_distance_sensor_get_value(so3); 
+    so4Value = wb_distance_sensor_get_value(so4); 
     so5Value = wb_distance_sensor_get_value(so5); 
     so6Value = wb_distance_sensor_get_value(so6);
     so7Value = wb_distance_sensor_get_value(so7);
     
     
     // Condição para realizar um giro de 90 graus
-    if (1024 - so3Value <= minimumDistance) {
+    if (1024 - so3Value <= minimumDistance || 
+        1024 - so4Value <= minimumDistance) {
       // Se houver uma parede a uma distancia de 
       // 200 ou menos do sensor so3, adiciona 
       // velocidade negativa ao lado esquerdo
       // e positiva do lado direito
       
-      /*wb_motor_set_velocity(frontLeftMotor, -3.0);
+      wb_motor_set_velocity(frontLeftMotor, -3.0);
       wb_motor_set_velocity(backLeftMotor, -3.0);
       wb_motor_set_velocity(frontRightMotor, 3.0);
-      wb_motor_set_velocity(backRightMotor, 3.0);*/
+      wb_motor_set_velocity(backRightMotor, 3.0);
       
       // O robo permanece girando por 1200ms 
       delay(1200);
@@ -239,19 +238,29 @@ int main(int argc, char **argv) {
     if (rightSpeed < 1.5) rightSpeed = 1.5;
     if (rightSpeed > 5.0) rightSpeed = 5.0;
     
-    printf("rightSpeed: %f\n", rightSpeed);
-    fflush(stdout);
+    //printf("rightSpeed: %f\n", rightSpeed);
+
        
     // Aplica as velocidades aos motores do robo
-    /*wb_motor_set_velocity(frontLeftMotor, leftSpeed);
+    wb_motor_set_velocity(frontLeftMotor, leftSpeed);
     wb_motor_set_velocity(backLeftMotor, leftSpeed);
     wb_motor_set_velocity(frontRightMotor, rightSpeed);
-    wb_motor_set_velocity(backRightMotor, rightSpeed);*/
+    wb_motor_set_velocity(backRightMotor, rightSpeed);
     
-    const double *values = wb_supervisor_field_get_sf_vec3f(translation);
+    //const double *values = wb_supervisor_field_get_sf_vec3f(translation);
     const double *rot_values = wb_supervisor_field_get_sf_rotation(rotation);
     // printf("MY_ROBOT is at position: %g %g %g\n", values[0], values[1], values[2]);
-    printf("MY_ROBOT is at rotation: %g %g %g %g\n", rot_values[0], rot_values[1], rot_values[2], rot_values[3]);
+    double yAxis = rot_values[1];
+    double yRotation = rot_values[3];
+
+    //if (yAxis == 1) 
+    
+        
+    //printf("MY_ROBOT is at rotation: %g %g %g %g\n", rot_values[0], rot_values[1], rot_values[2], rot_values[3]);
+    //printf("MY_ROBOT is at position: %g %g %g\n", position[0], position[1], position[2]);
+    //printf("*********\n");
+    
+    //fflush(stdout);    
   };
   
   // Limpeza do ambiente do webots
