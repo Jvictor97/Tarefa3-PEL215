@@ -43,9 +43,8 @@ double inverseSensorModel(double x, double y, double theta, double xi, double yi
   double alpha = 0.2, beta = 20;
   
   double r = sqrt(pow(xi - x, 2) + pow(yi - y, 2));
-  printf("Robo: (%.2f, %.2f)\nCelula: (%.2f, %.2f)\n", x, y, xi, yi);
-  printf("Distancia: %f \n", r);
   double phi = atan2(yi - y, xi - x) - theta;
+  int chosen = 0;
   
   // Ângulos dos sensores: [-90, -50, -30, -10, 10, 30, 50, 90]
   const double sensorAngles[] = {-90, -50, -30, -10, 10, 30, 50, 90};
@@ -53,7 +52,9 @@ double inverseSensorModel(double x, double y, double theta, double xi, double yi
   for (int sensorIndex = 0; sensorIndex < 8; sensorIndex++) {
     sensorTheta = sensorAngles[sensorIndex] * M_PI / 180;    
     
+    printf("sensor: %d, sensorTheta: %f, phi: %f, theta: %f\n", sensorIndex, sensorTheta, phi, theta); 
     if (fabs(phi - sensorTheta) < minDelta || minDelta == -1) {
+      chosen = sensorIndex;
       zk = sensorData[sensorIndex];
       thetak = sensorTheta;
       minDelta = fabs(phi - sensorTheta);
@@ -61,15 +62,16 @@ double inverseSensorModel(double x, double y, double theta, double xi, double yi
   }
   
   if (r > fmin((double) zmax, zk + alpha / 2) || fabs(phi - thetak) > beta / 2 || zk > zmax)
-    return l0;
+    return l0; // NÃO ESTÁ ENTRANDO AQUI
 
-  if (zk < zmax && fabs(r - zk) < alpha / 2)
-    return locc;
+  if (zk < zmax && fabs(r - zk) < alpha / 2) 
+    return locc; // QUASE NÃO ENTRA AQUI
+  
+  printf("SENSOR: %d, r: %f, zk: %f\n", chosen, r, zk);
   
   if (r <= zk)
     return lfree;
-  
-  
+    
   return 0.0;
 }
 
@@ -83,8 +85,12 @@ void occupancyGridMapping(double x, double y, double theta, double sensorData[])
             double yi = column - 7.5;
             
             // Uma célula será considerada como "dentro do campo de visão" caso a distância
-            // entre o centro de massa do robô e o da célula seja menor do que zmax
-            if (sqrt(pow(xi - x, 2) + pow(yi - y, 2)) <= zmax) {
+            // entre o centro de massa do robô e o da célula seja menor do que zmax e esteja
+            // no campo de visao do robo
+            double robotCellAngle = atan2(yi - y, xi - x) * 180 / M_PI;
+            
+            if (sqrt(pow(xi - x, 2) + pow(yi - y, 2)) <= zmax && robotCellAngle >= -90 && robotCellAngle <= 90) {
+                printf("row: %d, column: %d, angle: %f\n", row, column, robotCellAngle);
                 l[row][column] = l[row][column] + inverseSensorModel(x, y, theta, xi, yi, sensorData) - l0;
             }
         }
@@ -92,17 +98,19 @@ void occupancyGridMapping(double x, double y, double theta, double sensorData[])
 }
 
 // Função para printar a matriz L
-void printMatrix(){
+void printMatrix(bool printValues){
   for (int row = 0; row < 8; row++) {
     for (int column = 0; column < 16; column++) {  
-       printf("%.2f ", l[row][column]);  
+       if (printValues)
+         printf("%.2f ", l[row][column]);  
+       else
+         printf("%.2f ", 1 - (1 / (1 + exp(l[row][column]))));  
    }
     printf("\n");
  }
  
-  printf("----------------------------------------------\n");
-  printf("----------------------------------------------\n");
-  printf("----------------------------------------------\n");
+  printf("*******************\n");
+  printf("*******************\n");
 }
 
 // Funcao principal
@@ -147,7 +155,7 @@ int main(int argc, char **argv) {
   wb_motor_set_position(frontLeftMotor, INFINITY);
   wb_motor_set_position(frontRightMotor, INFINITY);
   wb_motor_set_position(backLeftMotor, INFINITY);
-  wb_motor_set_position(backRightMotor, INFINITY);    
+  wb_motor_set_position(backRightMotor, INFINITY);
   
   // Variaveis para os valores dos sensores
   double so7Value, so6Value, so5Value, so0Value, 
@@ -211,63 +219,65 @@ int main(int argc, char **argv) {
       
       // O robo permanece girando por 1200ms 
       delay(1200);
-      // Então segue para a proxima iteracao do laco while
-      continue;
     }
+    else {
+      // Condicao para definir o maior valor dos sensores do lado direito
+      maxRightSensorValue = so5Value > so6Value ? 
+                            (so5Value > so7Value ? so5Value : so7Value) : 
+                            (so6Value > so7Value ? so6Value : so7Value);
+                            
+      // Condicao para definir o maior valor dos sensores do lado esquerdo                     
+      maxLeftSensorValue = so0Value > so1Value ?
+                           (so0Value > so2Value ? so0Value : so2Value) :
+                           (so1Value > so2Value ? so1Value : so2Value);                         
+      
+      // Aplicando a correcao aos valores dos sensores                      
+      currentRightDistance = 1024 - maxRightSensorValue;
+      currentLeftDistance = 1024 - maxLeftSensorValue;
+      
+      // Se a distancia para o lado esquerdo for inferior ao limiar, 
+      // utiliza a nova formula de erro para manter a mesma distancia 
+      // dos os dois lados do robo
+      if (currentLeftDistance < 200) error = currentLeftDistance - currentRightDistance;
+      // Caso contrario, utiliza o limiar de distancia minima para o lado direito
+      else error = minimumDistance - currentRightDistance;
+             
+      // Incrementa o valor da integral (Controlador Integral)
+      integral += error;
+      // Calcula a diferenca entre o erro atual e o anterior (Controlador Derivativo)
+      errorDifference = error - oldError;
+      // Atualiza o erro anterior
+      oldError = error;
+      
+      // Calcula a potencia a ser adicionada ao lado direito (Controlador PID)
+      motorPower = (kp * error) + (ki * integral) + (kd * errorDifference);
+         
+      // Calcula a nova velocidade do lado direito
+      rightSpeed = 3.0 + motorPower;
+      
+      // Condicoes para limitar as velocidades minima e maxima
+      if (rightSpeed < 1.5) rightSpeed = 1.5;
+      if (rightSpeed > 5.0) rightSpeed = 5.0;
+             
+      // Aplica as velocidades aos motores do robo
+      wb_motor_set_velocity(frontLeftMotor, leftSpeed);
+      wb_motor_set_velocity(backLeftMotor, leftSpeed);
+      wb_motor_set_velocity(frontRightMotor, rightSpeed);
+      wb_motor_set_velocity(backRightMotor, rightSpeed);
     
-    // Condicao para definir o maior valor dos sensores do lado direito
-    maxRightSensorValue = so5Value > so6Value ? 
-                          (so5Value > so7Value ? so5Value : so7Value) : 
-                          (so6Value > so7Value ? so6Value : so7Value);
-                          
-    // Condicao para definir o maior valor dos sensores do lado esquerdo                     
-    maxLeftSensorValue = so0Value > so1Value ?
-                         (so0Value > so2Value ? so0Value : so2Value) :
-                         (so1Value > so2Value ? so1Value : so2Value);                         
-    
-    // Aplicando a correcao aos valores dos sensores                      
-    currentRightDistance = 1024 - maxRightSensorValue;
-    currentLeftDistance = 1024 - maxLeftSensorValue;
-    
-    // Se a distancia para o lado esquerdo for inferior ao limiar, 
-    // utiliza a nova formula de erro para manter a mesma distancia 
-    // dos os dois lados do robo
-    if (currentLeftDistance < 200) error = currentLeftDistance - currentRightDistance;
-    // Caso contrario, utiliza o limiar de distancia minima para o lado direito
-    else error = minimumDistance - currentRightDistance;
-           
-    // Incrementa o valor da integral (Controlador Integral)
-    integral += error;
-    // Calcula a diferenca entre o erro atual e o anterior (Controlador Derivativo)
-    errorDifference = error - oldError;
-    // Atualiza o erro anterior
-    oldError = error;
-    
-    // Calcula a potencia a ser adicionada ao lado direito (Controlador PID)
-    motorPower = (kp * error) + (ki * integral) + (kd * errorDifference);
-       
-    // Calcula a nova velocidade do lado direito
-    rightSpeed = 3.0 + motorPower;
-    
-    // Condicoes para limitar as velocidades minima e maxima
-    if (rightSpeed < 1.5) rightSpeed = 1.5;
-    if (rightSpeed > 5.0) rightSpeed = 5.0;
-           
-    // Aplica as velocidades aos motores do robo
-    wb_motor_set_velocity(frontLeftMotor, leftSpeed);
-    wb_motor_set_velocity(backLeftMotor, leftSpeed);
-    wb_motor_set_velocity(frontRightMotor, rightSpeed);
-    wb_motor_set_velocity(backRightMotor, rightSpeed);
+    }
     
     const double *rot_values = wb_supervisor_field_get_sf_rotation(rotation);
     
     double yAxis = rot_values[1];
-    double yAngle = rot_values[3];
+    double yAngle = rot_values[3];   
 
     // Em algumas situações o webots inverte o eixo Y de -1 (configurado)
     // para 1 (valor padrão), portanto será realizada a validação para 
     // inverter os ângulos caso necessário
     if (yAxis > 0 && abs(yAxis - 1) < 0.5) yAngle = -yAngle;
+    
+    double theta = -yAngle + M_PI / 2;
     
     // Obtendo a posição do robô
     const double *position = wb_supervisor_node_get_position(robot_node);
@@ -287,8 +297,8 @@ int main(int argc, char **argv) {
       sensorMetricValues[sensorIndex] = slope * sensorRawValue + intercept;;     
     }
     
-    occupancyGridMapping(x, z, yAngle, sensorMetricValues);
-    printMatrix();
+    occupancyGridMapping(x, z, theta, sensorMetricValues);
+//    printMatrix(false);
 
     fflush(stdout);    
   };
