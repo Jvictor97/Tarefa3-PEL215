@@ -12,7 +12,7 @@
 double l[8][16];
 
 // Distância máxima medida pelo sensor
-double zmax = 5.3;
+double zmax = 5;
 // Variáveis para o Mapeamento
 double l0 = 0.0, locc = 0.4, lfree = -0.4;
 
@@ -34,40 +34,34 @@ void delay (int time_milisec) {
 // Sebastian THRUN; Wolfram BURGARD; Dieter FOX - PROBABILISTIC ROBOTICS (Tabela 9.2)
 double inverseSensorModel(double x, double y, double theta, double xi, double yi, double sensorData[]) {
   
-  // Dados dos sensores
+  // Dados dos sensores e configuracao
   double zk, thetak, sensorTheta;
   double minDelta = -1;
-
-  
-  // Alpha = grossura das paredes, Beta = ângulo de abertura dos sensores
-  double alpha = 0.2, beta = 20;
+  double alpha = 1, beta = 20;
   
   double r = sqrt(pow(xi - x, 2) + pow(yi - y, 2));
   double phi = atan2(yi - y, xi - x) - theta;
-  int chosen = 0;
-  
-  // Ângulos dos sensores: [-90, -50, -30, -10, 10, 30, 50, 90]
+
+  // Ângulos dos sensores
   const double sensorAngles[] = {-90, -50, -30, -10, 10, 30, 50, 90};
 
   for (int sensorIndex = 0; sensorIndex < 8; sensorIndex++) {
     sensorTheta = sensorAngles[sensorIndex] * M_PI / 180;    
     
-    printf("sensor: %d, sensorTheta: %f, phi: %f, theta: %f\n", sensorIndex, sensorTheta, phi, theta); 
+    //printf("sensor: %d, sensorTheta: %f, phi: %f, theta: %f, z: %f\n", sensorIndex, sensorTheta, phi, theta, sensorData[sensorIndex]); 
     if (fabs(phi - sensorTheta) < minDelta || minDelta == -1) {
-      chosen = sensorIndex;
       zk = sensorData[sensorIndex];
       thetak = sensorTheta;
       minDelta = fabs(phi - sensorTheta);
     }
+    
   }
-  
+
   if (r > fmin((double) zmax, zk + alpha / 2) || fabs(phi - thetak) > beta / 2 || zk > zmax)
-    return l0; // NÃO ESTÁ ENTRANDO AQUI
+    return l0; 
 
   if (zk < zmax && fabs(r - zk) < alpha / 2) 
-    return locc; // QUASE NÃO ENTRA AQUI
-  
-  printf("SENSOR: %d, r: %f, zk: %f\n", chosen, r, zk);
+    return locc;  
   
   if (r <= zk)
     return lfree;
@@ -90,7 +84,7 @@ void occupancyGridMapping(double x, double y, double theta, double sensorData[])
             double robotCellAngle = atan2(yi - y, xi - x) * 180 / M_PI;
             
             if (sqrt(pow(xi - x, 2) + pow(yi - y, 2)) <= zmax && robotCellAngle >= -90 && robotCellAngle <= 90) {
-                printf("row: %d, column: %d, angle: %f\n", row, column, robotCellAngle);
+                //printf("\nrow: %d, column: %d\n", row, column);
                 l[row][column] = l[row][column] + inverseSensorModel(x, y, theta, xi, yi, sensorData) - l0;
             }
         }
@@ -109,8 +103,7 @@ void printMatrix(bool printValues){
     printf("\n");
  }
  
-  printf("*******************\n");
-  printf("*******************\n");
+  printf("\n\n");
 }
 
 // Funcao principal
@@ -278,6 +271,8 @@ int main(int argc, char **argv) {
     if (yAxis > 0 && abs(yAxis - 1) < 0.5) yAngle = -yAngle;
     
     double theta = -yAngle + M_PI / 2;
+    //double theta = -3 * yAngle + 3 * M_PI;
+    printf("theta: %f\n", theta);
     
     // Obtendo a posição do robô
     const double *position = wb_supervisor_node_get_position(robot_node);
@@ -298,7 +293,7 @@ int main(int argc, char **argv) {
     }
     
     occupancyGridMapping(x, z, theta, sensorMetricValues);
-//    printMatrix(false);
+    printMatrix(false);
 
     fflush(stdout);    
   };

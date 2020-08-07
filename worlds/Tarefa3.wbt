@@ -2,8 +2,8 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.5768638082385705 -0.6133466026972729 -0.5394757563637197 2.090451658332547
-  position -1.9227493706308505 27.35403931956124 -1.2345909735815714
+  orientation -0.5828161442181639 -0.5981756931840474 -0.5500101654719273 2.1196070219230236
+  position -2.1698319248398863 14.929139015673334 1.5527760710317031
 }
 Floor {
   name "floor(2)"
@@ -27,9 +27,9 @@ TexturedBackground {
 TexturedBackgroundLight {
 }
 Wall {
-  translation 1 0 -3.1
+  translation 0.97 0 -2.96
   name "wall(6)"
-  size 6.4 2.4 0.2
+  size 6.15 2.4 0.4
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
@@ -41,10 +41,10 @@ Wall {
   }
 }
 Wall {
-  translation -2.1 0 1.5
+  translation -1.91 0 1.5
   rotation 0 1 0 1.5708
   name "wall(4)"
-  size 9 2.4 0.2
+  size 9 2.4 0.4
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
@@ -59,10 +59,10 @@ Wall {
   }
 }
 Wall {
-  translation -4.1 0 -0.01
+  translation -3.82 0 -0.0100011
   rotation 0 1 0 1.5708
   name "wall(10)"
-  size 16 2.4 0.2
+  size 16 2.4 0.4
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
@@ -80,7 +80,7 @@ Wall {
   translation -2.5 0 7.89
   rotation 0 -1 0 -5.307179586466759e-06
   name "wall(16)"
-  size 3 2.4 0.2
+  size 3 2.4 0.4
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
@@ -98,7 +98,7 @@ Wall {
   translation -0.0101 0.01 1.59
   rotation 0 -1 0 -5.307179586466759e-06
   name "wall(1)"
-  size 4 2.4 0.2
+  size 4 2.4 0.4
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
@@ -113,10 +113,10 @@ Wall {
   }
 }
 Wall {
-  translation 1.9999 0.01 4.9
+  translation 1.9999 0.01 4.84
   rotation 0 -1 0 -5.307179586466759e-06
   name "wall(2)"
-  size 4 2.4 0.2
+  size 4 2.4 0.4
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
@@ -131,10 +131,10 @@ Wall {
   }
 }
 Wall {
-  translation 4.1 0 2.51
+  translation 3.84 0 2.51
   rotation 0 1 0 1.5708
   name "wall(5)"
-  size 11 2.4 0.2
+  size 11 2.4 0.4
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
@@ -149,10 +149,10 @@ Wall {
   }
 }
 Wall {
-  translation 4.1 0 -5.6
+  translation 3.87 0 -5.47
   rotation 0 1 0 1.5708
   name "wall(3)"
-  size 4.8 1 0.2
+  size 4.8 1 0.4
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
@@ -167,10 +167,10 @@ Wall {
   }
 }
 Wall {
-  translation 0.079987 0 -8.09
+  translation 0.0799884 0 -7.81
   rotation 0 -1 0 -5.307179586466759e-06
   name "wall(11)"
-  size 8.2 1 0.2
+  size 8 1 0.4
   appearance PBRAppearance {
     baseColorMap ImageTexture {
       url [
@@ -185,8 +185,8 @@ Wall {
   }
 }
 DEF MY_ROBOT Pioneer3at {
-  translation -3.5 0 7.5
-  rotation 0 -1 0 1.5708
+  translation -3.31 0.11 7
+  rotation 0 1 0 -1.5707953071795862
   controller "my_controller"
   supervisor TRUE
   extensionSlot [
@@ -195,7 +195,7 @@ DEF MY_ROBOT Pioneer3at {
   ]
 }
 Panel {
-  translation -0.96 0 8.04
-  size 5 2.4 0.05
+  translation -1.01 0 7.89
+  size 5 2.4 0.4
   panelsCount 4
 }
